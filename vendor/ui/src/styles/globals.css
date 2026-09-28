@@ -1,0 +1,48 @@
+/*
+ * Entry stylesheet. Apps import this once: `import '@repo/ui/styles/globals.css'`.
+ *
+ * Tailwind is imported without preflight's layer order changes: we use its
+ * theme + preflight + utilities, then our base layer. Our tokens replace
+ * Tailwind's default palette and scales entirely (see theme.generated.css).
+ */
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/preflight.css' layer(base);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+@import './tokens.generated.css';
+@import './theme.generated.css';
+@import './motion.css';
+
+/* Scan component sources for class names when consumed from an app. */
+@source '../components';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+@layer base {
+  html {
+    font-family: var(--a-font-sans);
+    font-size: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--a-color-bg);
+    color: var(--a-color-fg);
+    font-size: var(--a-text-md);
+    line-height: var(--a-text-md-line-height);
+  }
+
+  *,
+  ::before,
+  ::after {
+    border-color: var(--a-color-border);
+  }
+
+  ::selection {
+    background-color: var(--a-color-primary-subtle);
+    color: var(--a-color-primary-subtle-fg);
+  }
+}

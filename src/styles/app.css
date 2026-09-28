@@ -1,0 +1,4 @@
+@import '@repo/ui/styles/globals.css';
+@import './anumat.css';
+/* App sources for Tailwind to scan. */
+@source '../';

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Anumat Console</title>
+    <meta name="theme-color" content="#003D96" />
+    <meta name="robots" content="noindex" />
+    <meta name="description" content="Anumat Console: the staff back office for running Anumat pilots: workspaces, leads, feedback and system health." />
+    <meta property="og:title" content="Anumat Console" />
+    <meta property="og:description" content="The staff back office for running Anumat pilots." />
+    <meta property="og:image" content="%BASE_URL%og-image.png" />
+    <link rel="icon" href="%BASE_URL%favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="%BASE_URL%apple-touch-icon.png" />
+    <script>
+      // Apply the saved or system theme before first paint.
+      try {
+        var t = localStorage.getItem('anumat-theme');
+        if (t !== 'light' && t !== 'dark') t = document.documentElement.dataset.theme;
+        if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = t;
+      } catch (e) { document.documentElement.dataset.theme = 'light'; }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

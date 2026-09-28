@@ -1,0 +1,172 @@
+/*
+ * Anumat brand layer on top of the design system.
+ *
+ * @repo/ui ships a neutral violet theme. The prototype keeps every component
+ * and semantic token name, and only re-points the brand-facing tokens to the
+ * hackathon brand, Anumat Blue #003D96 (same values as
+ * anumat-erp-web/packages/brand/ui-theme.css). Load after globals.css.
+ *
+ * Rule: text on Anumat Blue is white (9.96:1). Dark mode uses a lighter blue
+ * with Ink text (6.2:1).
+ */
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('../assets/fonts/PlusJakartaSans-latin.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter Variable';
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('../assets/fonts/Inter-latin.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-weight: 100 800;
+  font-display: swap;
+  src: url('../assets/fonts/JetBrainsMono-latin.woff2') format('woff2');
+}
+
+:root {
+  --a-font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+:root {
+  --a-palette-brand-50: #f1f6fe;
+  --a-palette-brand-100: #e0ecff;
+  --a-palette-brand-200: #c4dbfe;
+  --a-palette-brand-300: #97bfff;
+  --a-palette-brand-400: #629af7;
+  --a-palette-brand-500: #3978df;
+  --a-palette-brand-600: #1459c4;
+  --a-palette-brand-700: #003d96;
+  --a-palette-brand-800: #012b6d;
+  --a-palette-brand-900: #011f52;
+  --a-palette-brand-950: #011337;
+
+  --an-ink: #0f1a2e;
+  --an-paper: #f6f7f9;
+  --an-accent: #f2a516;
+
+  /* Calm UI: Inter for the product, Plus Jakarta Sans stays for marketing headings. */
+  --a-font-sans: 'Inter Variable', Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --an-font-display: 'Plus Jakarta Sans', 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+
+  /* Borders do the work shadows used to; overlays keep theirs. */
+  --a-shadow-xs: 0 0 #0000;
+  --a-shadow-sm: 0 1px 2px 0 rgb(15 23 42 / 0.04);
+}
+
+:root,
+[data-theme='light'] {
+  --a-color-bg: var(--an-paper);
+  --a-color-surface: #ffffff;
+  --a-color-surface-muted: #fafbfc;
+  --a-color-surface-sunken: #f0f2f5;
+  --a-color-surface-hover: #f3f5f8;
+  --a-color-surface-active: #eceff3;
+  --a-color-border: #e3e6eb;
+  --a-color-border-subtle: #eceef2;
+  --a-color-border-strong: #cbd1da;
+  --a-color-border-input: #8a93a1; /* 3.1:1 on white */
+  --a-color-fg: #1a202b; /* 16.3:1 on white, 15.2:1 on the page */
+  --a-color-fg-muted: #545d6b; /* 6.7:1 */
+  --a-color-fg-subtle: #6b7482; /* 4.7:1 */
+  --a-color-surface-selected: var(--a-palette-brand-50);
+  --a-color-ring: var(--a-palette-brand-500);
+  --a-color-fg-link: var(--a-palette-brand-700);
+  --a-color-primary: var(--a-palette-brand-700);
+  --a-color-primary-hover: var(--a-palette-brand-800);
+  --a-color-primary-active: var(--a-palette-brand-900);
+  --a-color-primary-fg: #ffffff;
+  --a-color-primary-subtle: var(--a-palette-brand-100);
+  --a-color-primary-subtle-fg: var(--a-palette-brand-800);
+  --a-color-primary-border: var(--a-palette-brand-200);
+
+  /* Info in teal, so an info banner never looks like the brand. */
+  --a-color-info: #0e7490;
+  --a-color-info-hover: #0b5f76;
+  --a-color-info-active: #094d60;
+  --a-color-info-fg: #ffffff;
+  --a-color-info-subtle: #e6f6f9;
+  --a-color-info-subtle-fg: #0b5566;
+  --a-color-info-border: #a5dde8;
+}
+
+[data-theme='dark'] {
+  --a-color-bg: #0d1017;
+  --a-color-surface: #131720;
+  --a-color-surface-muted: #161b25;
+  --a-color-surface-hover: #1a1f2a;
+  --a-color-surface-active: #212734;
+  --a-color-surface-sunken: #0d1017;
+  --a-color-border: #252b37;
+  --a-color-border-subtle: #1c212c;
+  --a-color-border-strong: #333b49;
+  --a-color-border-input: #5f6979; /* 3.2:1 */
+  --a-color-fg: #dde2ea; /* 13.8:1: bright enough, no glare */
+  --a-color-fg-muted: #9ba4b3; /* 7.1:1 */
+  --a-color-fg-subtle: #7e8797; /* 5.0:1 */
+  --a-color-surface-selected: #172742;
+  --a-color-ring: #6b9df5;
+  --a-color-fg-link: #8db5fb;
+  --a-color-primary: #6b9df5; /* ink text 6.4:1 */
+  --a-color-primary-hover: #8db5fb;
+  --a-color-primary-active: var(--a-palette-brand-200);
+  --a-color-primary-fg: var(--an-ink);
+  --a-color-primary-subtle: #172742;
+  --a-color-primary-subtle-fg: var(--a-palette-brand-200);
+  --a-color-primary-border: #1e3f7a;
+
+  --a-color-info: #22b8cf;
+  --a-color-info-hover: #4fc9dc;
+  --a-color-info-active: #7dd8e6;
+  --a-color-info-fg: var(--an-ink);
+  --a-color-info-subtle: #0f2e36;
+  --a-color-info-subtle-fg: #9be3ef;
+  --a-color-info-border: #155e6e;
+}
+
+/* Chart series, validated for colour-blind separation and 3:1 on the surface. */
+:root,
+[data-theme='light'] {
+  --an-chart-1: #1459c4;
+  --an-chart-2: #d4600f;
+}
+[data-theme='dark'] {
+  --an-chart-1: #4d8bef;
+  --an-chart-2: #e0661a;
+}
+
+/* Numbers line up in tables and stats. */
+table,
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Marketing headings keep the brand typeface. */
+.an-display {
+  font-family: var(--an-font-display);
+}
+
+/* Compact density (account menu): everything in rem shrinks about 7%. */
+html[data-density='compact'] {
+  font-size: 93.75%;
+}
+
+
+/* Module icons on the landing page share the brand blue: colour is for meaning, not decoration. */
+:root {
+  --an-mod-requests: var(--a-color-fg-link);
+  --an-mod-approvals: var(--a-color-fg-link);
+  --an-mod-meetings: var(--a-color-fg-link);
+  --an-mod-documents: var(--a-color-fg-link);
+  --an-mod-tasks: var(--a-color-fg-link);
+  --an-mod-process: var(--a-color-fg-link);
+}
+
+/* Marketing pages keep the brand typeface for headings; the product uses Inter. */
+.an-marketing :is(h1, h2, h3) {
+  font-family: var(--an-font-display);
+}

@@ -1,0 +1,37 @@
+/* Hand-written motion primitives. Durations and easings come from tokens. */
+@theme inline {
+  --animate-spin: a-spin 700ms linear infinite;
+  --animate-pulse: a-pulse 1.6s var(--a-ease-standard) infinite;
+  --animate-fade-in: a-fade-in var(--a-duration-base) var(--a-ease-enter);
+  --animate-fade-out: a-fade-out var(--a-duration-fast) var(--a-ease-exit);
+  --animate-pop-in: a-pop-in var(--a-duration-base) var(--a-ease-enter);
+  --animate-pop-out: a-pop-out var(--a-duration-fast) var(--a-ease-exit);
+  --animate-slide-in-right: a-slide-in-right var(--a-duration-slow) var(--a-ease-enter);
+  --animate-slide-out-right: a-slide-out-right var(--a-duration-base) var(--a-ease-exit);
+  --animate-toast-in: a-toast-in var(--a-duration-slow) var(--a-ease-enter);
+  --animate-indeterminate: a-indeterminate 1.4s var(--a-ease-standard) infinite;
+}
+
+@keyframes a-spin { to { transform: rotate(1turn); } }
+@keyframes a-pulse { 50% { opacity: 0.5; } }
+@keyframes a-fade-in { from { opacity: 0; } }
+@keyframes a-fade-out { to { opacity: 0; } }
+@keyframes a-pop-in { from { opacity: 0; transform: scale(0.97) translateY(2px); } }
+@keyframes a-pop-out { to { opacity: 0; transform: scale(0.97); } }
+@keyframes a-slide-in-right { from { transform: translateX(100%); } }
+@keyframes a-slide-out-right { to { transform: translateX(100%); } }
+@keyframes a-toast-in { from { opacity: 0; transform: translateY(0.5rem); } }
+@keyframes a-indeterminate {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(250%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
