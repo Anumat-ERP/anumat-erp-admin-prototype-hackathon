@@ -49,7 +49,7 @@ export function BarTable({
         </tr>
       </thead>
       <tbody>
-        {rows.map((r) => (
+        {rows.map((r, row) => (
           <tr key={r.id}>
             <th scope="row" className="w-36 py-2 pe-3 text-start align-middle font-regular text-fg-muted">
               {r.label}
@@ -63,8 +63,8 @@ export function BarTable({
                       .map((s, i, list) => (
                         <div
                           key={s.label}
-                          className={cn('h-full', i === list.length - 1 && 'rounded-e-sm')}
-                          style={{ width: `${(s.value / top) * 100}%`, background: s.color }}
+                          className={cn('an-grow-x h-full', i === list.length - 1 && 'rounded-e-sm')}
+                          style={{ width: `${(s.value / top) * 100}%`, background: s.color, animationDelay: `${row * 40}ms` }}
                         />
                       ))}
                   </div>
@@ -127,8 +127,8 @@ export function ColumnChart({ caption, points }: { caption: string; points: { la
               <div className="relative flex flex-1 flex-col items-center justify-end" aria-hidden>
                 {labelled ? <Text as="span" variant="caption" weight="medium" numeric className="mb-1">{p.value}</Text> : null}
                 <div
-                  className="w-full max-w-10 rounded-t-sm"
-                  style={{ height: `${(p.value / nice) * 100}%`, background: 'var(--an-chart-1)', minHeight: p.value ? 2 : 0 }}
+                  className="an-grow-y w-full max-w-10 rounded-t-sm"
+                  style={{ height: `${(p.value / nice) * 100}%`, background: 'var(--an-chart-1)', minHeight: p.value ? 2 : 0, animationDelay: `${i * 30}ms` }}
                 />
               </div>
             </Tooltip>

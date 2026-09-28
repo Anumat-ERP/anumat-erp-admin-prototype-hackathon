@@ -19,6 +19,7 @@ import {
   TabsTrigger,
   Text,
   Textarea,
+  cn,
   useToast,
 } from '@repo/ui';
 import { useState } from 'react';
@@ -31,6 +32,7 @@ import { FLAG_LABEL, PLAN_LABEL, STAGE_LABEL, attentionReasons, requests30d, use
 import type { Flag, Plan } from '../data/types';
 import { daysUntil, formatDate, formatHours, formatShortDate } from '../lib/format';
 import { DEPLOYMENT_LABEL } from './Workspaces';
+import { Changed, useFresh } from '../lib/motion';
 
 const FLAG_HELP: Record<Flag, string> = {
   telegram: 'People can connect Telegram and approve from it.',
@@ -51,6 +53,8 @@ export function WorkspaceDetail() {
   const [reason, setReason] = useState('');
   const [reasonError, setReasonError] = useState<string>();
   const [note, setNote] = useState('');
+  const freshNote = useFresh(w?.notes.map((n) => n.id) ?? []);
+  const freshEntry = useFresh(state.audit.filter((a) => a.target === w?.name).map((a) => a.id));
 
   if (!w) {
     return (
@@ -77,7 +81,7 @@ export function WorkspaceDetail() {
     <>
       <PageHeader
         title={w.name}
-        titleMetadata={<WorkspaceStatusDot status={w.status} />}
+        titleMetadata={<Changed value={w.status} className="-mx-1 px-1"><WorkspaceStatusDot status={w.status} /></Changed>}
         subtitle={`${w.industry} · ${w.city} · ${w.sizeBand} people · customer since ${formatDate(w.createdAt)}`}
         backAction={{ content: 'Workspaces', href: '/workspaces' }}
         renderLink={headerLink}
@@ -116,7 +120,11 @@ export function WorkspaceDetail() {
         <Stat
           label="Seats"
           value={`${w.memberCount} / ${w.seats}`}
-          hint={`${PLAN_LABEL[w.plan]}${w.plan === 'pilot' && w.pilotEndsAt ? `, ends ${formatShortDate(w.pilotEndsAt)}` : ''}`}
+          hint={
+            <Changed value={`${w.plan}${w.pilotEndsAt}`}>
+              {`${PLAN_LABEL[w.plan]}${w.plan === 'pilot' && w.pilotEndsAt ? `, ends ${formatShortDate(w.pilotEndsAt)}` : ''}`}
+            </Changed>
+          }
           className="col-span-2 lg:col-span-1"
         />
       </div>
@@ -274,7 +282,7 @@ export function WorkspaceDetail() {
               <CardHeader title="Notes" description="For the Anumat team only; the customer never sees these." />
               <ol className="flex flex-col gap-3">
                 {w.notes.map((n) => (
-                  <li key={n.id} className="flex flex-col gap-1">
+                  <li key={n.id} className={cn('flex flex-col gap-1 rounded-md', freshNote(n.id))}>
                     <span className="text-sm text-fg-muted">
                       {staff(n.staffId).name} · <Time iso={n.at} />
                     </span>
@@ -304,7 +312,7 @@ export function WorkspaceDetail() {
               <CardHeader title="History" description="Everything staff did to this workspace." />
               <ol className="flex flex-col gap-2.5">
                 {history.map((a) => (
-                  <li key={a.id} className="flex flex-col text-md">
+                  <li key={a.id} className={cn('flex flex-col rounded-md text-md', freshEntry(a.id))}>
                     <span>
                       <span className="font-medium">{staff(a.staffId).name}</span> · {a.action}
                     </span>

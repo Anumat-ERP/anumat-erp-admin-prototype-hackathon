@@ -6,12 +6,13 @@ import { CommandPalette, commandKey } from '../components/CommandPalette';
 import { Logo } from '../components/Logo';
 import { navLink } from '../components/links';
 import { attentionReasons, useStore } from '../data/store';
+import { withViewTransition } from '../lib/motion';
 
 type Theme = 'light' | 'dark';
 const ROLE = { owner: 'Owner', support: 'Support', sales: 'Sales', engineer: 'Engineer' } as const;
 
 function useTheme() {
-  const [theme, setTheme] = useState<Theme>(() => (document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light'));
+  const [theme, setThemeState] = useState<Theme>(() => (document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light'));
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
     try {
@@ -20,6 +21,12 @@ function useTheme() {
       // Theme still applies for this visit.
     }
   }, [theme]);
+  // Cross-fade between light and dark instead of flashing.
+  const setTheme = (next: Theme) =>
+    withViewTransition(() => {
+      document.documentElement.dataset.theme = next;
+      setThemeState(next);
+    });
   return [theme, setTheme] as const;
 }
 
@@ -153,7 +160,7 @@ export function Shell() {
 
   return (
     <AppShell topBar={topBar} navigation={<Navigation sections={sections} renderLink={navLink} />} mainClassName="md:p-8">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
+      <div key={pathname} className="an-page mx-auto flex w-full max-w-7xl flex-col gap-6">
         <Outlet />
       </div>
       <CommandPalette open={searching} onOpenChange={setSearching} />

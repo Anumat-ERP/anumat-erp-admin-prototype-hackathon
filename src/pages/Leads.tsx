@@ -12,6 +12,7 @@ import {
   Select,
   Text,
   Textarea,
+  cn,
   useToast,
 } from '@repo/ui';
 import { useState } from 'react';
@@ -22,6 +23,7 @@ import { Dot } from '../components/ui';
 import { STAGE_LABEL, useStore } from '../data/store';
 import type { Lead, LeadStage } from '../data/types';
 import { formatDate } from '../lib/format';
+import { Changed, useFresh } from '../lib/motion';
 
 const STAGES: LeadStage[] = ['new', 'contacted', 'demo', 'pilot', 'won', 'lost'];
 const STAGE_DOT: Record<LeadStage, string> = {
@@ -105,6 +107,7 @@ export function LeadDetail() {
   const [converting, setConverting] = useState(false);
   const [reason, setReason] = useState('');
   const [reasonError, setReasonError] = useState<string>();
+  const freshNote = useFresh(lead?.notes.map((n) => n.id) ?? []);
 
   if (!lead) {
     return (
@@ -119,7 +122,7 @@ export function LeadDetail() {
     <>
       <PageHeader
         title={lead.company}
-        titleMetadata={<Dot tone={STAGE_DOT[lead.stage]}>{STAGE_LABEL[lead.stage]}</Dot>}
+        titleMetadata={<Changed value={lead.stage} className="-mx-1 px-1"><Dot tone={STAGE_DOT[lead.stage]}>{STAGE_LABEL[lead.stage]}</Dot></Changed>}
         subtitle={`${lead.contact} · ${lead.sizeBand} people · via ${lead.source}, ${formatDate(lead.createdAt)}`}
         backAction={{ content: 'Leads', href: '/leads' }}
         renderLink={headerLink}
@@ -155,7 +158,7 @@ export function LeadDetail() {
             <CardHeader title="Notes" />
             <ol className="flex flex-col gap-3">
               {lead.notes.map((n) => (
-                <li key={n.id} className="flex flex-col gap-1">
+                <li key={n.id} className={cn('flex flex-col gap-1 rounded-md', freshNote(n.id))}>
                   <span className="text-sm text-fg-muted">
                     {staff(n.staffId).name} · <Time iso={n.at} />
                   </span>

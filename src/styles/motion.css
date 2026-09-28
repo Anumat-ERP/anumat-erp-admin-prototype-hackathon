@@ -1,0 +1,126 @@
+/*
+ * Anumat motion. Quiet, quick and only where it explains something:
+ *   - where you are (a page or tab arrives),
+ *   - what changed (a new note slides in, a status you just set is highlighted),
+ *   - what a number means (chart bars grow from zero once).
+ * Only opacity and transform move, nothing bounces, nothing loops, and
+ * everything is off when the system asks for reduced motion (see the end, and
+ * the global clamp in @repo/ui motion.css). Durations and easings are the
+ * @repo/ui tokens: fast 100ms, base 150ms, slow 250ms, slower 400ms.
+ */
+
+/* 1. Hover and focus colors fade instead of snapping. :where() keeps this at
+ * zero specificity, so any element with its own transition-* utility wins. */
+:where(a[href], button, summary, [role='tab'], [role='option'], [role='menuitem'], label:has(> input)) {
+  transition-property: color, background-color, border-color, box-shadow, opacity;
+  transition-duration: var(--a-duration-fast);
+  transition-timing-function: var(--a-ease-standard);
+}
+
+/* 2. A page arrives: its sections settle 4px upward, a beat apart. The
+ * transform is on the sections, never on the page wrapper, so position:fixed
+ * bars inside a page stay pinned to the screen. .an-stagger does the same for
+ * any group (the landing hero). */
+:is(.an-page, .an-stagger) > :not(.fixed, [aria-hidden='true']) {
+  animation: an-rise var(--a-duration-slow) var(--a-ease-enter) backwards;
+}
+:is(.an-page, .an-stagger) > :nth-child(2) { animation-delay: 30ms; }
+:is(.an-page, .an-stagger) > :nth-child(3) { animation-delay: 60ms; }
+:is(.an-page, .an-stagger) > :nth-child(n + 4) { animation-delay: 90ms; }
+
+/* 3. Switching tabs: the new panel fades in. No slide, the tab bar already
+ * says which way you went. */
+[role='tabpanel'][data-state='active'] {
+  animation: an-fade var(--a-duration-base) var(--a-ease-enter);
+}
+
+/* 4. Something new was added by you (a note, a comment, a task): it rises in
+ * and briefly carries a tint so the eye finds it. Applied by useFresh(). */
+.an-enter {
+  animation:
+    an-rise var(--a-duration-slow) var(--a-ease-enter),
+    an-tint 1.2s var(--a-ease-standard);
+}
+
+/* 5. A value you just changed (a status, a stage, a count): a soft highlight
+ * that fades out. Applied by <Changed>. */
+.an-changed {
+  border-radius: var(--a-radius-sm);
+  animation: an-tint 1.2s var(--a-ease-standard);
+}
+
+/* 6. Chart marks grow from their baseline once, a few ms apart; later data
+ * changes glide to the new size. */
+.an-grow-y {
+  transform-origin: bottom;
+  animation: an-grow-y var(--a-duration-slower) var(--a-ease-enter) backwards;
+  transition: height var(--a-duration-slow) var(--a-ease-standard);
+}
+.an-grow-x {
+  transform-origin: left;
+  animation: an-grow-x var(--a-duration-slower) var(--a-ease-enter) backwards;
+  transition: width var(--a-duration-slow) var(--a-ease-standard);
+}
+[dir='rtl'] .an-grow-x { transform-origin: right; }
+
+/* 7. Bars pinned to the bottom of a phone screen slide up into place. */
+.an-bar-in {
+  animation: an-bar-in var(--a-duration-slow) var(--a-ease-enter);
+}
+
+/* 8. Marketing sections reveal as they scroll into view (landing page only).
+ * Set by useReveal(); without JavaScript nothing is ever hidden. */
+[data-reveal] {
+  transition:
+    opacity var(--a-duration-slower) var(--a-ease-enter),
+    transform var(--a-duration-slower) var(--a-ease-enter);
+}
+[data-reveal='hidden'] {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+/* 9. Light and dark themes cross-fade (browsers with View Transitions). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--a-duration-slow);
+  animation-timing-function: var(--a-ease-standard);
+}
+
+@keyframes an-rise {
+  from { opacity: 0; transform: translateY(4px); }
+}
+@keyframes an-fade {
+  from { opacity: 0; }
+}
+@keyframes an-tint {
+  from { background-color: var(--a-color-primary-subtle); }
+}
+@keyframes an-grow-y {
+  from { transform: scaleY(0); }
+}
+@keyframes an-grow-x {
+  from { transform: scaleX(0); }
+}
+@keyframes an-bar-in {
+  from { transform: translateY(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(.an-page, .an-stagger) > *,
+  [role='tabpanel'],
+  .an-enter,
+  .an-grow-y,
+  .an-grow-x,
+  .an-bar-in,
+  .an-changed {
+    animation: none !important;
+  }
+  [data-reveal] {
+    transition: none;
+  }
+  [data-reveal='hidden'] {
+    opacity: 1;
+    transform: none;
+  }
+}

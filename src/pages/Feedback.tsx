@@ -5,6 +5,7 @@ import { Time } from '../components/Time';
 import { Dot, Stat } from '../components/ui';
 import { nps, useStore } from '../data/store';
 import type { FeedbackItem } from '../data/types';
+import { Changed } from '../lib/motion';
 
 const PROBLEM: Record<NonNullable<FeedbackItem['status']>, { label: string; dot: string }> = {
   open: { label: 'Open', dot: 'bg-critical' },
@@ -62,7 +63,7 @@ export function Feedback() {
                   <Card className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                     <div className="flex min-w-0 flex-col gap-1">
                       <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-fg-muted">
-                        <Dot tone={s.dot}>{s.label}</Dot>
+                        <Changed value={p.status} className="-mx-1 px-1"><Dot tone={s.dot}>{s.label}</Dot></Changed>
                         {wsLink(p.workspaceId)} · {p.person} · <Time iso={p.at} />
                       </span>
                       <Text>{p.text}</Text>

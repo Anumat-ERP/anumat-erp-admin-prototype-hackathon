@@ -5,6 +5,7 @@ import { Time } from '../components/Time';
 import { Dot, table } from '../components/ui';
 import { useStore } from '../data/store';
 import type { Delivery } from '../data/types';
+import { Changed } from '../lib/motion';
 
 const SERVICE = {
   operational: { label: 'Operational', dot: 'bg-success' },
@@ -98,7 +99,7 @@ export function System() {
               {rows.map((d) => (
                 <tr key={d.id} className={table.row}>
                   <td className={table.td}>
-                    <Dot tone={DELIVERY[d.status].dot}>{DELIVERY[d.status].label}</Dot>
+                    <Changed value={d.status} className="-mx-1 px-1"><Dot tone={DELIVERY[d.status].dot}>{DELIVERY[d.status].label}</Dot></Changed>
                   </td>
                   <td className={table.td}>
                     <span className="font-mono text-sm">{d.template}</span>

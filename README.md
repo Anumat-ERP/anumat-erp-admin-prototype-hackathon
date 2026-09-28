@@ -44,6 +44,9 @@ Engineer) to see actions logged under their name.
 - **Reasons for destructive actions.** Suspending a workspace or losing a lead
   needs a reason.
 - **Attention first.** The overview tells you what to do today, not just totals.
+- **Motion that explains.** Pages settle in; a note you add or a status, stage or
+  date you change is briefly highlighted; charts grow once. All off with reduced
+  motion. See `src/styles/motion.css`.
 
 ## Run it
 
