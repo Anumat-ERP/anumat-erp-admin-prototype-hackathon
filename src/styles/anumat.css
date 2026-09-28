@@ -72,7 +72,7 @@
   --a-color-border-input: #8a93a1; /* 3.1:1 on white */
   --a-color-fg: #1a202b; /* 16.3:1 on white, 15.2:1 on the page */
   --a-color-fg-muted: #545d6b; /* 6.7:1 */
-  --a-color-fg-subtle: #6b7482; /* 4.7:1 */
+  --a-color-fg-subtle: #636c7a; /* 5.3:1 on white, 4.9:1 on the page, 4.7:1 on sunken */
   --a-color-surface-selected: var(--a-palette-brand-50);
   --a-color-ring: var(--a-palette-brand-500);
   --a-color-fg-link: var(--a-palette-brand-700);
